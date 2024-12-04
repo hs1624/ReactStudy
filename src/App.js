@@ -8,6 +8,8 @@ import Outp1 from './comp/inp/output01'
 import Signup from './comp/reg/Signup'
 import Mypage from './comp/reg/MyPage'
 
+import Ax1 from './comp/ax/ax01'
+
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           
           <Route path={"/signup"} element={<Signup />} />
           <Route path={"/mypage"} element={<Mypage />} />
+
+          <Route path={"/ax1"} element={<Ax1 />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -48,6 +52,9 @@ function Home() {
       <h4>데이터 옮기기</h4>
       <Link to="/inp1">데이터 입력</Link><br/>
       <Link to="/outp1">데이터 출력</Link><br/>
+
+      <h4>Axios</h4>
+      <Link to="/ax1">AXIOS 사용</Link><br/>
 
       <h2>회원</h2>
       <Link to="/signup">회원가입</Link><br/>
