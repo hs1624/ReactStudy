@@ -10,6 +10,8 @@ import Mypage from './comp/reg/MyPage'
 import Ref from './comp/inp/Ref01'
 
 import Projoin from './comp/pro/Join1'
+import Login from './comp/pro/login'
+import LoginRe from './comp/pro/LoginRe'
 
 import Ax1 from './comp/ax/ax01'
 
@@ -30,6 +32,8 @@ function App() {
           <Route path={"/signup"} element={<Signup />} />
           <Route path={"/mypage"} element={<Mypage />} />
           <Route path={"/join"} element={<Projoin />} />
+          <Route path={"/login"} element={<Login />} />
+          <Route path={"/loginResult"} element={<LoginRe />} />
 
           <Route path={"/ax1"} element={<Ax1 />} />
           <Route path={"/ref"} element={<Ref />} />
@@ -64,6 +68,7 @@ function Home() {
 
       <h2>회원</h2>
       <Link to="/signup">회원가입</Link><br/>
+      <Link to="/login">로그인</Link>
     </div>
   )
 }

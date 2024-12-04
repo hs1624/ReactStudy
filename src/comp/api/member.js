@@ -15,7 +15,17 @@ export const memberIdCheck = (obj) => {
     })
 }
 
+export const login = (obj) => {
+    return api.post('/member/login', JSON.stringify(obj)
+        , {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+    )
+}
+
+
 export const areaList = () => {
-    console.log('aa'); // 위치 발각될수 있어 지워야됨 
     return api.get('/area/list');
 }
