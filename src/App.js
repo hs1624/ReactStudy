@@ -7,6 +7,9 @@ import Inp1 from './comp/inp/input01'
 import Outp1 from './comp/inp/output01'
 import Signup from './comp/reg/Signup'
 import Mypage from './comp/reg/MyPage'
+import Ref from './comp/inp/Ref01'
+
+import Projoin from './comp/pro/Join1'
 
 import Ax1 from './comp/ax/ax01'
 
@@ -26,8 +29,11 @@ function App() {
           
           <Route path={"/signup"} element={<Signup />} />
           <Route path={"/mypage"} element={<Mypage />} />
+          <Route path={"/join"} element={<Projoin />} />
 
           <Route path={"/ax1"} element={<Ax1 />} />
+          <Route path={"/ref"} element={<Ref />} />
+
         </Routes>
       </BrowserRouter>
     </div>
