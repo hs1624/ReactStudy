@@ -1,40 +1,45 @@
-import { useRef } from "react";
-import { useNavigate } from "react-router-dom"; // 올바른 navigate 사용
-import {login} from '../api/member' 
+import { useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { memberLogin } from '../api/member'
 
-export default function Login() {
+export default function Study() {
 
     const navigate = useNavigate();
 
     const idRef = useRef('');
     const pwRef = useRef('');
 
+    //페이지 접속 했을 때.
+    useEffect(() => {
+        localStorage.removeItem('userId');
+    }, [])
+
     const loginAction = () => {
 
         const idValue = idRef.current.value;
         const pwValue = pwRef.current.value;
-        console.log(pwValue);
 
+        //데이터 포장
         let obj = new Object();
         obj.userId = idValue;
         obj.userPw = pwValue;
 
-        login(obj)
+        memberLogin(obj)
         .then(res => {
             const data = res.data;
-            if(data.code == '200' && data.data == 'Y') {
-
-                console.log('로그인 성공');
-
+            if(data.code === '200' && data.data === 'Y') {
+                //다음 페이지 이동!
+                localStorage.setItem('userId', idValue);        //권한 등록
+                localStorage.setItem('auto', 'random  UUID JWT');
+                navigate('/itemList');      //아이템 리스트 이동
             }
             else {
                 idRef.current.value = '';
                 pwRef.current.value = '';
                 idRef.current.focus();
-                alert('아이디를 다시 입력해주세요.');
+                alert('아이디를 재 입력해주세요.');
             }
-
-            console.log(res);
+            
         })
     }
 

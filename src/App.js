@@ -13,6 +13,8 @@ import Projoin from './comp/pro/Join'
 import Login from './comp/pro/login'
 import LoginRe from './comp/pro/LoginRe'
 
+import ItemLi from './comp/pro/ItemList'
+
 import Ax1 from './comp/ax/ax01'
 
 
@@ -37,6 +39,8 @@ function App() {
 
           <Route path={"/ax1"} element={<Ax1 />} />
           <Route path={"/ref"} element={<Ref />} />
+
+          <Route path={"/itemList"} element={<ItemLi />} />
 
         </Routes>
       </BrowserRouter>
