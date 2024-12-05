@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { memberLogin } from '../api/member'
+import { login } from '../api/member'
 
 export default function Study() {
 
@@ -24,7 +24,7 @@ export default function Study() {
         obj.userId = idValue;
         obj.userPw = pwValue;
 
-        memberLogin(obj)
+        login(obj)
         .then(res => {
             const data = res.data;
             if(data.code === '200' && data.data === 'Y') {

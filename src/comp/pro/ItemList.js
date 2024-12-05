@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { itemList } from "../api/Item";
+import { useEffect, useState } from 'react';
+import { itemList } from '../api/Item';
+import ItemArea from './ItemArea'
 
 export default function Study() {
 
-    const [items, setItems] = useState([]);
+    const [ items, setItems] = useState([]);
 
-    const categoryLists = [
+    const catagoryLists = [
         {id: '1', 'name': '도서'},
         {id: '2', 'name': '전자'},
         {id: '3', 'name': '생활'}
@@ -17,7 +18,8 @@ export default function Study() {
         .then(res => {
             console.log(res);
             if(res.data.code == 200) {
-
+                setItems(res.data.data);
+                console.log(res.data.data);
             }
         })
     }
@@ -33,7 +35,8 @@ export default function Study() {
     return(
         <div>
             <h1>아이템 리스트</h1>
-            {categoryLists.map(
+            {/** 카테고리 리스트 */}
+            {catagoryLists.map(
                 (item, index) => (
                     <div key={index}>
                         <a onClick={
@@ -43,6 +46,13 @@ export default function Study() {
                             }
                         }>{item.name}</a>
                     </div>
+                )
+            )}
+
+            {/** 아이템 리스트 */}
+            {items.map(
+                (item, index) => (
+                    <ItemArea item={item} index={index}></ItemArea>
                 )
             )}
         </div>

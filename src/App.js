@@ -73,7 +73,8 @@ function Home() {
       <h2>회원</h2>
       {/* <Link to="/signup">회원가입</Link><br/> */}
       <Link to="/join">회원가입</Link><br/>
-      <Link to="/login">로그인</Link>
+      <Link to="/login">로그인</Link><br/>
+      <Link to="/itemList">아이템 리스트</Link>
     </div>
   )
 }
