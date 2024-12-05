@@ -17,7 +17,7 @@ export default function Login() {
                     e => {
                         setId(e.target.value);
                     }
-                } />
+                } /> &nbsp;&nbsp;
 
             <input type="password"
                 placeholder="비밀번호 입력"
@@ -26,7 +26,7 @@ export default function Login() {
                     e => {
                         setPw(e.target.value);
                     }
-                } />
+                } /> <br/>
 
             <input type="button"
                 value='로그인'

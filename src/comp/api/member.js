@@ -29,3 +29,20 @@ export const login = (obj) => {
 export const areaList = () => {
     return api.get('/area/list');
 }
+
+/**
+ * 회원가입 기능
+ * @param {
+      'userId': 아이디,
+      'userPw': 비밀번호,
+      'userName': name,  
+      'email': email,
+      'birth': birth,
+      'gender': gender,
+      'areaIdx': area} obj 
+ * @returns 
+ */
+
+export const memberRegist = (obj) => {
+    return api.post('/member/regist', JSON.stringify(obj))
+}

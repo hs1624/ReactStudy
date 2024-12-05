@@ -9,7 +9,7 @@ import Signup from './comp/reg/Signup'
 import Mypage from './comp/reg/MyPage'
 import Ref from './comp/inp/Ref01'
 
-import Projoin from './comp/pro/Join1'
+import Projoin from './comp/pro/Join'
 import Login from './comp/pro/login'
 import LoginRe from './comp/pro/LoginRe'
 
@@ -67,7 +67,8 @@ function Home() {
       <Link to="/ax1">AXIOS 사용</Link><br/>
 
       <h2>회원</h2>
-      <Link to="/signup">회원가입</Link><br/>
+      {/* <Link to="/signup">회원가입</Link><br/> */}
+      <Link to="/join">회원가입</Link><br/>
       <Link to="/login">로그인</Link>
     </div>
   )
