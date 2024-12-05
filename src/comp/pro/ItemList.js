@@ -5,16 +5,21 @@ import ItemArea from './ItemArea'
 export default function Study() {
 
     const [ items, setItems] = useState([]);
+    const [categoryId, setCategoryId] = useState(0);
+    const [keyword, setKeyword] = useState('');
 
     const catagoryLists = [
+        {id: '0', 'name': '전체'},
         {id: '1', 'name': '도서'},
         {id: '2', 'name': '전자'},
         {id: '3', 'name': '생활'}
     ]
 
-    function startItemList() {
-        console.log('itemList');
-        itemList()
+    //JavaScript의 오버로딩
+    //Java는 오버로딩이 필요한 갯수만큼 method를 만들면.
+    //JavaScript는 필요 없으면 생략.
+    function startItemList(seachItem) {
+        itemList(seachItem)
         .then(res => {
             console.log(res);
             if(res.data.code == 200) {
@@ -28,8 +33,23 @@ export default function Study() {
         startItemList();
     }, [])
 
+    //useState가 변화를 감지할 경우, 해당 event가 동작 되도록 정의
+    //이 부분 사용 할 때, [무한루프] 조심 하세요.
+    useEffect(() => {
+        searchBtn();
+    }, [keyword]);
+
     function categoryNum(num) {
         console.log('num: ', num);
+    }
+
+    /** 검색 버튼 */
+    function searchBtn() {
+        let param = new Object();
+        param.keyword = keyword;
+        console.log(param);
+
+        startItemList(param); // 아이템 검색
     }
 
     return(
@@ -49,6 +69,14 @@ export default function Study() {
                 )
             )}
 
+            <input
+                type="text"
+                placeholder='검색'
+                value={keyword}
+                onChange={
+                    e=>setKeyword(e.target.value)
+                }/>
+            <input type="button" value="검색" onClick={searchBtn} />
             {/** 아이템 리스트 */}
             {items.map(
                 (item, index) => (
