@@ -1,62 +1,62 @@
-import { useState } from "react";
-import { login } from "../api/member";
+import { useRef } from "react";
 import { useNavigate } from "react-router-dom"; // 올바른 navigate 사용
-
+import {login} from '../api/member' 
 
 export default function Login() {
 
-    const [id, setId] = useState('');
-    const [pw, setPw] = useState('');
     const navigate = useNavigate();
+
+    const idRef = useRef('');
+    const pwRef = useRef('');
+
+    const loginAction = () => {
+
+        const idValue = idRef.current.value;
+        const pwValue = pwRef.current.value;
+        console.log(pwValue);
+
+        let obj = new Object();
+        obj.userId = idValue;
+        obj.userPw = pwValue;
+
+        login(obj)
+        .then(res => {
+            const data = res.data;
+            if(data.code == '200' && data.data == 'Y') {
+
+                console.log('로그인 성공');
+
+            }
+            else {
+                idRef.current.value = '';
+                pwRef.current.value = '';
+                idRef.current.focus();
+                alert('아이디를 다시 입력해주세요.');
+            }
+
+            console.log(res);
+        })
+    }
+
     return (
         <div>
-            <input type="text"
+            <h1>로그인</h1>
+            <input
+                type="text"
                 placeholder="아이디 입력"
-                value={id}
-                onChange={
-                    e => {
-                        setId(e.target.value);
-                    }
-                } /> &nbsp;&nbsp;
+                ref={idRef} /><br/>
+            <input
+                type="password"
+                placeholder="패스워드 입력"
+                ref={pwRef} /><br/>
 
-            <input type="password"
-                placeholder="비밀번호 입력"
-                value={pw}
-                onChange={
-                    e => {
-                        setPw(e.target.value);
-                    }
-                } /> <br/>
+            <input type="button" value="회원가입" onClick={
+                () => {
+                    navigate('/pro1');
+                }
+            }/>
+            <input type="button" value="로그인" onClick={loginAction} />
 
-            <input type="button"
-                value='로그인'
-                onClick={
-                    () => {
-                        let obj = new Object();
-                        obj.userId = id;
-                        obj.userPw = pw;
-
-                        const startLogin = login(obj);
-
-                        startLogin.then(res => {
-
-                            //로그인 성공일때
-                            if (res.data.data === 'Y') {
-                                localStorage.setItem('userId', obj.userId);
-                                localStorage.setItem('userPw', obj.userPw);
-                                navigate('/loginResult');
-                            } else if(res.data.data === 'N'){
-                                alert('로그인 실패! 입력을 다시해주세요');
-                            }
-                        });
-
-                        startLogin.catch(err => {
-                            console.log('로그인 에러');
-                            console.log(err)
-                        });
-
-                    }
-                } />
         </div>
     )
 }
