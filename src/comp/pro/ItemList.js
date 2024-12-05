@@ -5,10 +5,10 @@ import ItemArea from './ItemArea'
 export default function Study() {
 
     const [ items, setItems] = useState([]);
-    const [categoryId, setCategoryId] = useState(0);
-    const [keyword, setKeyword] = useState('');
+    const [ categoryId, setCategoryId] = useState(0);
+    const [ keyword, setKeyword] = useState('');
 
-    const catagoryLists = [
+    const categoryLists = [
         {id: '0', 'name': '전체'},
         {id: '1', 'name': '도서'},
         {id: '2', 'name': '전자'},
@@ -39,65 +39,82 @@ export default function Study() {
         searchBtn();
     }, [keyword]);
 
+    //카테고리 검색
     function categoryNum(num) {
-        console.log('num: ', num);
+        console.log('num : ', num);
+
+        let param = new Object();
+        param.categoryIdx = num;
+        
+        startItemList(param);
+
     }
 
     /** 검색 버튼 */
     function searchBtn() {
         let param = new Object();
         param.keyword = keyword;
-        console.log(param);
-
-        startItemList(param); // 아이템 검색
+        console.log(param)
+        startItemList(param)
     }
 
+    //item 추천 값 올리기
     function changeItem(idx) {
         const copyItems = [...items];
-        copyItems[idx-1] = {...copyItems[idx-1], good: copyItems[idx-1].good+1};
+        copyItems[idx-1] = { ...copyItems[idx-1], good: copyItems[idx-1].good+1 };
         setItems(copyItems);
 
         let obj = new Object();
         obj.itemIdx = idx;
-
-        itemGood(obj);
+        itemGood(obj)
+        .then(res => {
+            console.log(res);
+        })
     }
+
+
 
     return(
         <div>
-            <h1>아이템 리스트</h1>
-            {/** 카테고리 리스트 */}
-            {catagoryLists.map(
+            <h1>ItemList</h1>
+            {/** Item Category */}
+            {categoryLists.map(
                 (item, index) => (
                     <div key={index}>
                         <a onClick={
                             e=> {
-                                e.preventDefault();     //html 기본기능 멈추게 하기
+                                e.preventDefault();
                                 categoryNum(item.id);
                             }
-                        }>{item.name}</a>
+                        }>{item.name}</a> <br/><br/>
                     </div>
                 )
             )}
 
             <input
-                type="text"
-                placeholder='검색'
-                value={keyword}
-                onChange={
-                    e=>setKeyword(e.target.value)
-                }/>
-            <input type="button" value="검색" onClick={searchBtn} />
-            {/** 아이템 리스트 */}
+            type='text'
+            placeholder='Search'
+            value={keyword}
+            onChange={
+                e=>setKeyword(e.target.value)
+            }/>
+
+            <input
+            type='button'
+            value='검색' 
+            onClick={searchBtn}/>
+
+            {/** Item List */}
             {items.map(
                 (item, index) => (
-                    <ItemArea item={item} index={index} onGoodUp={
+                    <ItemArea key={index} item={item} index={index} onGoodUp={
                         (idx) => {
+                            console.log(`부모 : ${idx}`);
                             const copy = items.copy;
-                            console.log('부모: ', idx);
-                            changeItem(idx);
+                            changeItem(idx)
                         }
-                    }></ItemArea>
+                    }>
+                    </ItemArea>
                 )
             )}
         </div>
