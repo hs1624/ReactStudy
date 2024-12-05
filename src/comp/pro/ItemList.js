@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { itemList } from '../api/Item';
+import { itemList,itemGood } from '../api/Item';
 import ItemArea from './ItemArea'
 
 export default function Study() {
@@ -52,6 +52,17 @@ export default function Study() {
         startItemList(param); // 아이템 검색
     }
 
+    function changeItem(idx) {
+        const copyItems = [...items];
+        copyItems[idx-1] = {...copyItems[idx-1], good: copyItems[idx-1].good+1};
+        setItems(copyItems);
+
+        let obj = new Object();
+        obj.itemIdx = idx;
+
+        itemGood(obj);
+    }
+
     return(
         <div>
             <h1>아이템 리스트</h1>
@@ -80,7 +91,13 @@ export default function Study() {
             {/** 아이템 리스트 */}
             {items.map(
                 (item, index) => (
-                    <ItemArea item={item} index={index}></ItemArea>
+                    <ItemArea item={item} index={index} onGoodUp={
+                        (idx) => {
+                            const copy = items.copy;
+                            console.log('부모: ', idx);
+                            changeItem(idx);
+                        }
+                    }></ItemArea>
                 )
             )}
         </div>
