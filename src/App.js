@@ -10,15 +10,23 @@ import Mypage from './comp/reg/MyPage'
 import Ref from './comp/inp/Ref01'
 
 import Projoin from './comp/pro/Join'
-import Login from './comp/pro/login'
+import Login from './comp/pro/Login'
 import LoginRe from './comp/pro/LoginRe'
 
 import ItemLi from './comp/pro/ItemList'
 
+import BoardWrite from './comp/pro/BoardWrite'
+import BoardList from './comp/pro/BoardList'
+import BoardDetail from './comp/pro/BoardDetail';
+
 import Ax1 from './comp/ax/ax01'
+import { useState } from 'react';
 
 
 function App() {
+
+  const [posts, setPosts] = useState([]);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -41,6 +49,12 @@ function App() {
           <Route path={"/ref"} element={<Ref />} />
 
           <Route path={"/itemList"} element={<ItemLi />} />
+
+          <Route path={"/boardWrite"} element={<BoardWrite posts = {posts} setPosts={setPosts}/>} />
+          <Route path={"/boardList"} element={<BoardList posts = {posts} />} />
+          <Route path="/post/:boardIdx" element={<BoardDetail />} />
+          
+
 
         </Routes>
       </BrowserRouter>
@@ -75,6 +89,8 @@ function Home() {
       <Link to="/join">회원가입</Link><br/>
       <Link to="/login">로그인</Link><br/>
       <Link to="/itemList">아이템 리스트</Link>
+      <hr></hr>
+      <Link to="/boardWrite" className='bold-text'>게시판</Link>
     </div>
   )
 }

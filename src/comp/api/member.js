@@ -15,7 +15,7 @@ export const memberIdCheck = (obj) => {
     })
 }
 
-export const login = (obj) => {
+export const Login = (obj) => {
     return api.post('/member/login', JSON.stringify(obj)
         , {
             headers: {
