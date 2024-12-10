@@ -1,95 +1,100 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { fetchPosts } from '../api/board';  // 게시글 목록 API 호출 함수 임포트
+import { useNavigate, useParams } from 'react-router-dom';
 
 export default function BoardList() {
-    const [posts, setPosts] = useState([]); // 게시글 데이터
-    const [filteredPosts, setFilteredPosts] = useState([]); // 검색 필터링된 데이터
-    const [searchField, setSearchField] = useState(''); // 검색 기준 (memberId, title, keyword)
-    const [searchQuery, setSearchQuery] = useState(''); // 검색어
+    const [posts, setPosts] = useState([]);  // 게시글 목록 상태
+    const { boardIdx } = useParams();  // URL에서 boardIdx 추출
+    const [isLoading, setIsLoading] = useState(true);  // 로딩 상태
+    const [error, setError] = useState(null);  // 에러 상태
     const navigate = useNavigate();
 
-    // 로컬스토리지에서 게시글 목록 가져오기
+    // 컴포넌트가 마운트될 때 게시글 목록을 API에서 불러옴
     useEffect(() => {
-        const savedPosts = JSON.parse(localStorage.getItem('posts')) || [];
-        setPosts(savedPosts);
-        setFilteredPosts(savedPosts); // 초기값 설정
-    }, []);
+        fetchPosts()
+            .then(data => {
+              console.log(data);
+                setPosts(data);  // 데이터가 배열이면 posts 상태에 설정
+                setIsLoading(false);  // 로딩 상태 false로 설정
+            })
+            .catch(err => {
+                console.error('게시글 목록을 불러오는 데 실패했습니다.', err);
+                setError('게시글 목록을 불러오는 데 실패했습니다.');  // 에러 메시지 설정
+                setIsLoading(false);  // 로딩 상태 false로 설정
+            });
+    }, []);  // 빈 배열을 넣어 컴포넌트 마운트 시 한 번만 호출
 
-    // 검색 필터 적용
-    const handleSearch = () => {
-        if (!searchField || !searchQuery.trim()) {
-            setFilteredPosts(posts); // 검색 기준이 없으면 전체 게시글 보여줌
-            return;
-        }
-
-        const filtered = posts.filter((post) =>
-            post[searchField]?.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-        setFilteredPosts(filtered);
-    };
-
-    // 게시글 상세 페이지로 이동
-    const viewPost = (boardIdx) => {
+    // 게시글 클릭 시 상세 페이지로 이동
+    const handlePostClick = (boardIdx) => {
         navigate(`/boardDetail/${boardIdx}`);
     };
 
+    // 스타일 객체 정의
+    const tableStyle = {
+        width: '100%',
+        borderCollapse: 'collapse',
+        marginTop: '20px',
+        fontSize: '18px',
+    };
+
+    const thTdStyle = {
+        padding: '20px 30px',
+        textAlign: 'left',
+        border: '1px solid #ddd',
+        wordWrap: 'break-word',
+    };
+
+    const thStyle = {
+        backgroundColor: '#f4f4f4',
+        fontWeight: 'bold',
+    };
+
+    const trHoverStyle = {
+        backgroundColor: '#f1f1f1',
+        cursor: 'pointer'
+    };
+
+    const buttonStyle = {
+        marginTop: '20px',
+        padding: '15px 30px',
+        fontSize: '18px',
+        backgroundColor: '#24a0ed',
+        color: 'white',
+        border: 'none',
+        borderRadius: '5px',
+        cursor: 'pointer',
+    };
+
     return (
-        <div style={{ margin: '20px' }}>
-            <h1>게시판 목록</h1>
-
-            {/* 검색 섹션 */}
-            <div style={{ marginBottom: '20px' }}>
-                <select
-                    value={searchField}
-                    onChange={(e) => setSearchField(e.target.value)}
-                    style={{ padding: '8px', marginRight: '10px' }}
-                >
-                    <option value="">검색 기준 선택</option>
-                    <option value="memberId">작성자</option>
-                    <option value="title">제목</option>
-                    <option value="keyword">키워드</option>
-                </select>
-                <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="검색어 입력"
-                    style={{ padding: '8px', marginRight: '10px' }}
-                />
-                <button onClick={handleSearch} style={{ padding: '8px' }}>
-                    검색
-                </button>
-            </div>
-
-            {/* 게시글 목록 */}
-            {filteredPosts.length === 0 ? (
-                <p>게시글이 없습니다.</p>
+        <div>
+            <h1>게시글 목록</h1>
+            {isLoading ? (
+                <p>로딩 중...</p>  // 로딩 중일 때
+            ) : error ? (
+                <p>{error}</p>  // 에러가 발생한 경우
             ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                <table style={tableStyle}>
                     <thead>
                         <tr>
-                            <th style={{ padding: '10px', border: '1px solid #ddd' }}>번호</th>
-                            <th style={{ padding: '10px', border: '1px solid #ddd' }}>작성자</th>
-                            <th style={{ padding: '10px', border: '1px solid #ddd' }}>제목</th>
-                            <th style={{ padding: '10px', border: '1px solid #ddd' }}>작성일자</th>
+                            <th style={{ ...thTdStyle, ...thStyle }}>번호</th>
+                            <th style={thTdStyle}>작성자</th>
+                            <th style={thTdStyle}>제목</th>
+                            <th style={thTdStyle}>작성일</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredPosts.map((post, index) => (
-                            <tr
-                                key={post.boardIdx}
-                                onClick={() => viewPost(post.boardIdx)}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>{index + 1}</td>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>{post.memberId}</td>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>{post.title}</td>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>{post.createdAt}</td>
+                        {posts && posts.map((post, index) => (
+                            <tr key={post.boardIdx} onClick={() =>handlePostClick(post.boardIdx)} style={trHoverStyle}>
+                                <td style={thTdStyle}>{index + 1}</td>
+                                <td style={thTdStyle}>{post.memberId}</td>
+                                <td style={thTdStyle}>{post.title}</td>
+                                <td style={thTdStyle}>{new Date(post.createdAt).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
             )}
+            <button style={buttonStyle} onClick={() => navigate('/boardWrite')}>새 게시글 작성</button>
         </div>
     );
 }
