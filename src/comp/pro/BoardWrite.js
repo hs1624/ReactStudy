@@ -1,101 +1,103 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate를 임포트
-import { createPost } from '../api/board';
+import { createPost } from '../api/board';  // 게시글 작성 API 호출 함수 임포트
+import { useNavigate } from 'react-router-dom';
 
 export default function BoardWrite() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const [isSubmitted, setIsSubmitted] = useState(false);
-    const navigate = useNavigate(); // 페이지 이동 기능 구현
+    const [author, setAuthor] = useState('');  // 작성자 상태 추가
+    const navigate = useNavigate();
 
-    // 게시글 작성 함수
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        const postData = { title, content };
-
-        try {
-            await createPost(postData); // 게시글 등록 API 호출
-            setIsSubmitted(true); // 글 작성 후 제출 상태로 변경
-        } catch (error) {
-            console.error('게시글 작성에 실패했습니다:', error);
-        }
+        
+        const boardData = { title, content, memberId: author };  // 작성자 값도 전달
+        createPost(boardData).then(data => {
+            alert('게시글이 작성되었습니다.');
+            navigate('/boardList');
+        }).catch(err => {
+            console.error('게시글 작성 실패', err);
+            alert('게시글 작성에 실패했습니다.');
+        });
     };
 
-    // 게시글 목록 페이지로 이동
-    const goToBoardList = () => {
-        navigate('/boardList'); // 게시글 목록 페이지로 이동
+    // 스타일 객체 정의
+    const formStyle = {
+        width: '60%',
+        margin: '0 auto',
+        padding: '20px',
+        fontSize: '18px',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
+    };
+
+    const inputStyle = {
+        width: '100%',
+        padding: '15px',
+        fontSize: '16px',
+        marginBottom: '20px',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        boxSizing: 'border-box',
+    };
+
+    const textareaStyle = {
+        width: '100%',
+        padding: '15px',
+        fontSize: '16px',
+        marginBottom: '20px',
+        border: '1px solid #ddd',
+        borderRadius: '8px',
+        boxSizing: 'border-box',
+        height: '200px',  // 텍스트 영역 크기 키우기
+    };
+
+    const buttonStyle = {
+        padding: '15px 30px',
+        fontSize: '18px',
+        backgroundColor: '#4CAF50',
+        color: 'white',
+        border: 'none',
+        borderRadius: '8px',
+        cursor: 'pointer',
     };
 
     return (
-        <div style={{ margin: '20px' }}>
-            <h1>게시글 작성</h1>
-            {isSubmitted ? (
+        <div>
+            <h1>새 게시글 작성</h1>
+            <form onSubmit={handleSubmit} style={formStyle}>
                 <div>
-                    <p>게시글이 등록되었습니다.</p>
-                    {/* 게시글 등록 후 메시지만 표시 */}
+                    <label>작성자:</label>
+                    <input 
+                        type="text" 
+                        value={author} 
+                        onChange={(e) => setAuthor(e.target.value)} 
+                        required 
+                        style={inputStyle}
+                    />
                 </div>
-            ) : (
-                <form onSubmit={handleSubmit}>
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <tbody>
-                            <tr>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>제목</td>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>
-                                    <input
-                                        type="text"
-                                        value={title}
-                                        onChange={(e) => setTitle(e.target.value)}
-                                        required
-                                        style={{ width: '100%', padding: '8px' }}
-                                    />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>내용</td>
-                                <td style={{ padding: '8px', border: '1px solid #ddd' }}>
-                                    <textarea
-                                        value={content}
-                                        onChange={(e) => setContent(e.target.value)}
-                                        required
-                                        rows="5"
-                                        style={{ width: '100%', padding: '8px' }}
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button
-                        type="submit"
-                        style={{
-                            padding: '10px 20px',
-                            fontWeight: 'bold',
-                            backgroundColor: '#007BFF',
-                            color: '#fff',
-                            border: 'none',
-                            cursor: 'pointer',
-                            marginTop: '20px',
-                        }}
-                    >
-                        게시글 등록
-                    </button>
-                </form>
-            )}
-            {/* 항상 표시되는 목록 버튼 */}
-            <div style={{ marginTop: '20px', textAlign: 'center' }}>
-                <button
-                    onClick={goToBoardList}
-                    style={{
-                        padding: '10px 20px',
-                        fontWeight: 'bold',
-                        backgroundColor: '#28a745',
-                        color: '#fff',
-                        border: 'none',
-                        cursor: 'pointer',
-                    }}
-                >
-                    목록으로 돌아가기
-                </button>
-            </div>
+                <div>
+                    <label>제목:</label>
+                    <input 
+                        type="text" 
+                        value={title} 
+                        onChange={(e) => setTitle(e.target.value)} 
+                        required 
+                        style={inputStyle}
+                    />
+                </div>
+                <div>
+                    <label>내용:</label>
+                    <textarea 
+                        value={content} 
+                        onChange={(e) => setContent(e.target.value)} 
+                        required 
+                        style={textareaStyle}
+                    />
+                </div>
+                <button type="submit" style={buttonStyle}>작성</button>
+            </form>
         </div>
     );
 }

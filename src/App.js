@@ -18,9 +18,11 @@ import ItemLi from './comp/pro/ItemList'
 import BoardWrite from './comp/pro/BoardWrite'
 import BoardList from './comp/pro/BoardList'
 import BoardDetail from './comp/pro/BoardDetail';
+import BoardModify from './comp/pro/BoardModify';
 
 import Ax1 from './comp/ax/ax01'
 import { useState } from 'react';
+
 
 
 function App() {
@@ -51,10 +53,11 @@ function App() {
           <Route path={"/itemList"} element={<ItemLi />} />
 
           <Route path={"/boardWrite"} element={<BoardWrite posts = {posts} setPosts={setPosts}/>} />
-          <Route path={"/boardList"} element={<BoardList posts = {posts} />} />
-          <Route path="/post/:boardIdx" element={<BoardDetail />} />
-          
-
+          <Route path={"/boardList"} element={<BoardList />} />
+          <Route path={"/boardDetail/:boardId"} element={<BoardDetail />} />
+          <Route path={"/BoardModify/:boardId"} element={<BoardModify />} />
+         
+         
 
         </Routes>
       </BrowserRouter>
@@ -90,7 +93,7 @@ function Home() {
       <Link to="/login">로그인</Link><br/>
       <Link to="/itemList">아이템 리스트</Link>
       <hr></hr>
-      <Link to="/boardWrite" className='bold-text'>게시판</Link>
+      <Link to="/boardList" className='bold-text'>게시판</Link>
     </div>
   )
 }

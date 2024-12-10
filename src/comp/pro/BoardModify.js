@@ -1,39 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { fetchPostById, updatePost } from '../api/board'; // 게시글 수정 API
+import axios from 'axios';
 
 export default function BoardModify() {
-    const { id } = useParams(); // URL에서 게시글 ID를 가져옴
+    const { boardId } = useParams();
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate();
 
-    // 게시글 상세 정보 가져오기
     useEffect(() => {
-        const getPost = async () => {
+        const fetchPost = async () => {
             try {
-                const response = await fetchPostById(id);
-                setTitle(response.data.title); // 제목 초기화
-                setContent(response.data.content); // 내용 초기화
+                const response = await axios.get(`http://localhost:8080/api/board/modify/${boardId}`);
+                setTitle(response.data.title);
+                setContent(response.data.content);
             } catch (error) {
-                console.error('게시글을 가져오는 데 실패했습니다:', error);
+                console.error('게시글을 불러오는 데 실패했습니다.', error);
             }
         };
-        getPost();
-    }, [id]);
 
-    // 게시글 수정 함수
+        fetchPost();
+    }, [boardId]);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const updatedPost = { title, content };
-
+    
+        if (!title || !content) {
+            alert("제목과 내용은 필수입니다.");
+            return;
+        }
+    
         try {
-            await updatePost(id, updatedPost); // 게시글 수정 API 호출
-            navigate(`/boardDetail/${id}`); // 수정된 게시글의 상세 페이지로 이동
+            await axios.put(`http://localhost:8080/api/board/${boardId}`, { title, content });
+            navigate(`/boardDetail/${boardId}`);
         } catch (error) {
-            console.error('게시글 수정에 실패했습니다:', error);
+            console.error('게시글 수정에 실패했습니다.', error);
+            alert(`게시글 수정에 실패했습니다: ${error.message}`);
         }
     };
+    
+    
 
     return (
         <div>
