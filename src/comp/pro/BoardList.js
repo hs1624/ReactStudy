@@ -51,10 +51,7 @@ export default function BoardList() {
 
     const trHoverStyle = {
         backgroundColor: '#f1f1f1',
-<<<<<<< HEAD
         cursor: 'pointer'
-=======
->>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
     };
 
     const buttonStyle = {
@@ -72,7 +69,7 @@ export default function BoardList() {
         <div>
             <h1>게시글 목록</h1>
             {isLoading ? (
-                <p>로딩 중...</p>  // 로딩 중일 때
+                <p>뜯어고치는 중...</p>  // 로딩 중일 때
             ) : error ? (
                 <p>{error}</p>  // 에러가 발생한 경우
             ) : (
