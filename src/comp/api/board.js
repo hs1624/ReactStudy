@@ -32,12 +32,20 @@ export const createPost = async (obj) => {
 
 /**
  * 특정 게시글 조회
+<<<<<<< HEAD
  * @param {number} boardIdx - 게시글 ID
+=======
+ * @param {number} boardId - 게시글 ID
+>>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
  * @returns {Promise} - 게시글 데이터를 반환하는 프로미스
  */
 export const fetchPostById = async (boardIdx) => {
     try {
+<<<<<<< HEAD
         const response = await api.get(`/board/find/boardId=${boardIdx}`);
+=======
+        const response = await api.get(`/board/find/boardIdx=${boardIdx}`);
+>>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
         console.log(response);
         return response.data;
     } catch (error) {

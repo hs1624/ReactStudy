@@ -51,7 +51,10 @@ export default function BoardList() {
 
     const trHoverStyle = {
         backgroundColor: '#f1f1f1',
+<<<<<<< HEAD
         cursor: 'pointer'
+=======
+>>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
     };
 
     const buttonStyle = {

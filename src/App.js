@@ -30,6 +30,7 @@ import Red02 from './comp/red/Red02'
 
 
 
+
 function App() {
 
   const [posts, setPosts] = useState([]);
@@ -59,11 +60,18 @@ function App() {
 
           <Route path={"/boardWrite"} element={<BoardWrite posts = {posts} setPosts={setPosts}/>} />
           <Route path={"/boardList"} element={<BoardList />} />
+<<<<<<< HEAD
           <Route path={"/boardDetail/:boardIdx"} element={<BoardDetail />} />
           <Route path={"/BoardModify/:boardIdx"} element={<BoardModify />} />
          
           <Route path={'/red01'} element={<Red01 />} />
           <Route path={'/red02'} element={<Red02 />} />
+=======
+          <Route path={"/boardDetail/:boardId"} element={<BoardDetail />} />
+          <Route path={"/BoardModify/:boardId"} element={<BoardModify />} />
+         
+         
+>>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
 
         </Routes>
       </BrowserRouter>
@@ -100,9 +108,12 @@ function Home() {
       <Link to="/itemList">아이템 리스트</Link>
       <hr></hr>
       <Link to="/boardList" className='bold-text'>게시판</Link>
+<<<<<<< HEAD
 
       <Link to='/red01'>리듀서 01</Link><br/>
       <Link to='/red02'>리듀서 02</Link><br/>
+=======
+>>>>>>> 0d15ed9fc61ef653d5ec33f8199fc85f7121db0b
     </div>
   )
 }
